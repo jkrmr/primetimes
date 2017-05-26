@@ -4,10 +4,10 @@ require "spec_helper"
 require "primetimes/primes_table"
 
 module Primetimes
-  RSpec.describe "PrimesTable#table" do
+  RSpec.describe "PrimesTable#to_a" do
     context "given n == 4" do
       it "returns a nested product array of the first 4 primes" do
-        table = PrimesTable.new(n: 4).table
+        table = PrimesTable.new(n: 4).to_a
 
         expect(table).to eq [[nil,  2,  3,  5,  7],
                              [  2,  4,  6, 10, 14],

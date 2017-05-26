@@ -6,7 +6,8 @@ require "primetimes/primes_table_printer"
 module Primetimes
   RSpec.describe PrimesTablePrinter do
     it "prints a formatted times table to stdout" do
-      table = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      table_array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+      table = double(:primes_table, to_a: table_array, max_product_length: 1)
 
       output = described_class.new(StringIO.new).print(table).string
 
