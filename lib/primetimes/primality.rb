@@ -13,11 +13,29 @@ module Primetimes
       return false if even?
 
       sqrt = Math.sqrt(self)
-      (3...sqrt).each do |i|
+      (3..sqrt).each do |i|
         return false if (self % i).zero?
       end
 
       true
+    end
+
+    def primes
+      unless is_a?(Integer) && self > -1
+        raise ArgumentError, "length is defined for n > 0"
+      end
+
+      i = 0
+      memo = {}
+      list = []
+
+      until list.length == self
+        i += 1
+        memo[i] = i.prime? if memo[i].nil?
+        list << i if memo[i]
+      end
+
+      list
     end
   end
 end
