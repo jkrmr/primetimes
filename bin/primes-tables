@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+$LOAD_PATH << "lib"
+require "primetimes"
+
+table = Primetimes::PrimesTable.new(n: ARGV.first.to_i || 3).table
+Primetimes::PrimesTablePrinter.new.print(table)
