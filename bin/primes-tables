@@ -5,7 +5,20 @@ $LOAD_PATH.unshift \
   File.join File.expand_path("..", File.dirname(__FILE__)), "lib"
 
 require "primetimes"
+require "optparse"
+
 include Primetimes
 
-table = PrimesTable.new(n: ARGV.first.to_i || 3).table
+opt_parser = OptionParser.new do |opts|
+  opts.banner = "Usage: primes-table NUMBER_OF_PRIMES"
+end
+opt_parser.parse!
+
+if ARGV.empty?
+  puts opt_parser.banner
+  exit(1)
+end
+
+num_of_primes = ARGV.first.to_i
+table = PrimesTable.new(n: num_of_primes)
 PrimesTablePrinter.new.print(table)
