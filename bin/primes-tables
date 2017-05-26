@@ -1,8 +1,11 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-$LOAD_PATH << "lib"
-require "primetimes"
+$LOAD_PATH.unshift \
+  File.join File.expand_path("..", File.dirname(__FILE__)), "lib"
 
-table = Primetimes::PrimesTable.new(n: ARGV.first.to_i || 3).table
-Primetimes::PrimesTablePrinter.new.print(table)
+require "primetimes"
+include Primetimes
+
+table = PrimesTable.new(n: ARGV.first.to_i || 3).table
+PrimesTablePrinter.new.print(table)
