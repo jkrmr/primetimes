@@ -2,7 +2,7 @@
 
 module Primetimes
   class PrimesTablePrinter
-    attr_reader :output, :cell_string
+    attr_reader :output, :cell_string, :max_product_length
 
     def initialize(output = $stdout)
       @output = output
@@ -10,17 +10,18 @@ module Primetimes
     end
 
     def print(table)
-      table_rows = table.to_a.map { |row| row_string(row, table).join(" ") }
+      @max_product_length = table.max_product_length
+      table_rows = table.to_a.map { |row| row_string(row).join(" ") }
       table_rows << ""
       output << table_rows.join("\n")
     end
 
     private
 
-    def row_string(row, table)
+    def row_string(row)
       row.map do |cell|
         unless cell_string[cell]
-          cell_string[cell] = cell.to_s.rjust(table.max_product_length)
+          cell_string[cell] = cell.to_s.rjust(max_product_length)
         end
 
         cell_string[cell]
