@@ -32,12 +32,11 @@ module Primetimes
     #    Constant for n <= m, where m: the length of the file-sourced list
     #    For every incremental n > m: subquadratic (linear * sublinear)
     def primes
-      unless is_a?(Integer) && self > -1
-        raise ArgumentError, "length is defined for n > 0"
-      end
+      raise ArgumentError unless is_a?(Integer) && self >= 0
+      return [] unless positive?
 
-      list = []
-      candidate = 2
+      list = [2]
+      candidate = 3
       length = list.length
 
       until length == self
@@ -46,7 +45,7 @@ module Primetimes
           length += 1
         end
 
-        candidate += 1
+        candidate += 2
       end
 
       list
