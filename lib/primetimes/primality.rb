@@ -16,8 +16,8 @@ module Primetimes
       end
 
       sqrt = Math.sqrt(self)
-      (3..sqrt).each do |i|
-        return false if (self % i).zero?
+      (5..sqrt).step(6).each do |i|
+        return false if (self % i).zero? || (self % i + 2).zero?
       end
 
       true
