@@ -5,6 +5,9 @@ require "primetimes/primes_list"
 
 module Primetimes
   module Primality
+    # Predicate: Is the receiver prime?
+    # Algorithm: Optimized trial division
+    # Complexity: sublinear
     def prime?
       unless is_a?(Integer) && positive?
         raise ArgumentError, "primality is defined for n ∈ ℕ"
@@ -25,6 +28,11 @@ module Primetimes
       true
     end
 
+    # Generate a list of n primes, where n = self
+    # Algorithm: "Load it from a damn file"
+    # Complexity:
+    #    Constant for n <= m, where m: the length of the file-sourced list
+    #    For every incremental n > m: subquadratic (linear * sublinear)
     def primes
       unless is_a?(Integer) && self > -1
         raise ArgumentError, "length is defined for n > 0"
