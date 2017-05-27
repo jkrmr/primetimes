@@ -1,1 +1,80 @@
 * primetimes
+
+  A command-line program to print a "times table" of prime numbers.
+
+** Usage
+  #+BEGIN_SRC shell
+  primetimes % bin/primes-tables
+  Usage: primes-table NUMBER_OF_PRIMES
+  #+END_SRC
+
+  #+BEGIN_SRC shell
+  primetimes % bin/primes-tables 10
+
+        2   3   5   7  11  13  17  19  23  29
+    2   4   6  10  14  22  26  34  38  46  58
+    3   6   9  15  21  33  39  51  57  69  87
+    5  10  15  25  35  55  65  85  95 115 145
+    7  14  21  35  49  77  91 119 133 161 203
+   11  22  33  55  77 121 143 187 209 253 319
+   13  26  39  65  91 143 169 221 247 299 377
+   17  34  51  85 119 187 221 289 323 391 493
+   19  38  57  95 133 209 247 323 361 437 551
+   23  46  69 115 161 253 299 391 437 529 667
+   29  58  87 145 203 319 377 493 551 667 841
+  #+END_SRC
+
+** Performance
+  The main operations are determining a given number's primality, and building a
+  list of n primes. The former is implemented using optimized trial division
+  (sub-linear asymptotic complexity), the latter, after some experimentation
+  with caching and concurrency (more on that below), using brute force (linear
+  time). Overall, sub-quadratic time.
+
+  This doesn't scale, but on an older MacBook Pro gives decent results for N <
+  1,000 and poor but tolerable performance for N < 10,000.
+
+  #+BEGIN_SRC
+  #                user     system      total        real
+  # n: 10      0.000000   0.000000   0.000000 (  0.001536)
+  # n: 100     0.030000   0.000000   0.030000 (  0.033594)
+  # n: 1000    1.620000   0.210000   1.830000 (  1.828361)
+  # n: 10000 129.780000  14.240000 144.020000 (144.213969)
+  #+END_SRC
+
+** Implementation notes
+
+  After some initial benchmarks I profiled the script and found that a
+  significant proportion of the script's time was being spent on string
+  construction:
+
+  #+BEGIN_SRC
+  #   %   cumulative   total
+  #  time   seconds   ms/call  name
+  #  43.43   112.12      0.05  Primetimes::PrimesTablePrinter#row_string
+  #  29.05   187.11     48.44  Array#map
+  #+END_SRC
+
+  So I experimented with caching and concurrency for this work. The former
+  yielded some economy, the latter actually degraded performance:
+
+  #+BEGIN_SRC ruby
+  # lib/primetimes/primes_table_printer.rb L21-L29 (5e312196)
+
+      def row_string(row)
+        row.map do |cell|
+          unless cell_string[cell]
+            cell_string[cell] = cell.to_s.rjust(max_product_length)
+          end
+
+          cell_string[cell]
+        end
+      end
+  #+END_SRC
+
+  There are other operations that are parallelizable, but I saw the same results
+  there as well--the cost of thread creation evidently dominates in this case.
+
+  Another experiment was with storing a list of primes as JSON and loading it,
+  in theory providing constant-time list generation for N up to the length of
+  the list. File I/O degraded performance significantly, though.
