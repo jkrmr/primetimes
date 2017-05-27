@@ -21,6 +21,10 @@ module Primetimes
 
     private
 
+    # Side Effect:
+    #   Set the maximum product encountered as a property (`max_product`) on the
+    #   object.
+    #
     def _table
       rows = _inner_table
 
@@ -31,14 +35,14 @@ module Primetimes
 
       # add header row of the list of primes
       rows.unshift(primes.unshift(nil))
+
+      self.max_product = rows.last.last
+
+      rows
     end
 
     # Map a list of primes to a list of lists, each list being a list of
     # products of primes.
-    #
-    # Side Effect:
-    #   Set the maximum product encountered as a property (`max_product`) on the
-    #   object.
     #
     # Example:
     #   In: [2, 3, 5, 7]
@@ -50,15 +54,7 @@ module Primetimes
     #
     def _inner_table
       primes.map do |prime_a|
-        primes.map do |prime_b|
-          product = prime_a * prime_b
-
-          if product > max_product
-            self.max_product = product
-          end
-
-          product
-        end
+        primes.map { |prime_b| prime_a * prime_b }
       end
     end
   end
