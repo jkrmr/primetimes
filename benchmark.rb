@@ -24,7 +24,6 @@ end
 
 #   %   cumulative   total
 #  time   seconds   ms/call  name
-
 #  43.43   112.12      0.05  Primetimes::PrimesTablePrinter#row_string
 #  29.05   187.11     48.44  Array#map
 #   9.56   211.79      0.01  Primetimes::PrimesTable#max_product_length

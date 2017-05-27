@@ -28,9 +28,7 @@ module Primetimes
 
     # Generate a list of n primes, where n = self
     # Algorithm: Brute force
-    # Complexity:
-    #    Constant for n <= m, where m: the length of the file-sourced list
-    #    For every incremental n > m: subquadratic (linear * sublinear)
+    # Complexity: subquadratic (linear * sublinear)
     def primes
       raise ArgumentError unless is_a?(Integer) && self >= 0
       return [] unless positive?
