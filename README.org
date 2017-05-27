@@ -55,25 +55,30 @@
   #  29.05   187.11     48.44  Array#map
   #+END_SRC
 
-  So I experimented with caching and concurrency for this work. The former
-  yielded some economy, the latter actually degraded performance:
+  So I experimented with concurrency and in-memory caching using a hash table
+  for this work. The former actually degraded performance, but the latter did
+  yield the expected economy:
 
   #+BEGIN_SRC ruby
-  # lib/primetimes/primes_table_printer.rb L21-L29 (5e312196)
+  # lib/primetimes/primes_table_printer.rb L23-L33 (9b3dbcb0)
 
-      def row_string(row)
-        row.map do |cell|
-          unless cell_string[cell]
-            cell_string[cell] = cell.to_s.rjust(max_product_length)
+      def _row_string(row)
+        cells = row.map do |int|
+          unless cell_string[int]
+            cell_string[int] = int.to_s.rjust(max_product_length)
           end
 
-          cell_string[cell]
+          cell_string[int]
         end
+
+        cells.join(" ")
       end
   #+END_SRC
+  [[https://github.com/jkrmr/primetimes/blob/9b3dbcb0/lib/primetimes/primes_table_printer.rb#L23-L33][lib/primetimes/primes_table_printer.rb#L23-L33 (9b3dbcb0)]]
 
-  There are other operations that are parallelizable, but I saw the same results
-  there as well--the cost of thread creation evidently dominates in this case.
+  There are other operations that are parallelizable, but I saw similar results
+  with concurrency there as well--the cost of thread creation evidently
+  dominates in this case.
 
   Another experiment was with storing a list of primes as JSON and loading it,
   in theory providing constant-time list generation for N up to the length of
