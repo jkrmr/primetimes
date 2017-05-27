@@ -7,6 +7,6 @@ require "primetimes/primes_table_printer"
 module Primetimes
   def self.print(num_of_primes, output = $stdout)
     table = PrimesTable.new(n: num_of_primes)
-    PrimesTablePrinter.new(output).print(table)
+    PrimesTablePrinter.new(table, output).print
   end
 end

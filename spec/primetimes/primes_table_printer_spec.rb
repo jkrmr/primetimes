@@ -9,9 +9,9 @@ module Primetimes
       table_array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
       table = double(:primes_table, to_a: table_array, max_product_length: 1)
 
-      output = described_class.new(StringIO.new).print(table).string
+      output = described_class.new(table, StringIO.new).print
 
-      expect(output).to eq <<~STR
+      expect(output.string).to eq <<~STR
       1 2 3
       4 5 6
       7 8 9
