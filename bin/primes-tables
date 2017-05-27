@@ -7,8 +7,6 @@ $LOAD_PATH.unshift \
 require "primetimes"
 require "optparse"
 
-include Primetimes
-
 opt_parser = OptionParser.new do |opts|
   opts.banner = "Usage: primes-table NUMBER_OF_PRIMES"
 end
@@ -21,6 +19,5 @@ end
 
 if $PROGRAM_NAME == __FILE__
   num_of_primes = ARGV.first.to_i
-  table = PrimesTable.new(n: num_of_primes)
-  PrimesTablePrinter.new.print(table)
+  Primetimes.print(num_of_primes)
 end
