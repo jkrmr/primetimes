@@ -10,7 +10,7 @@ module Primetimes
     end
 
     def print(table)
-      table_rows = table.to_a.map! { |row| row_string(row, table).join(" ") }
+      table_rows = table.to_a.map { |row| row_string(row, table).join(" ") }
       table_rows << ""
       output << table_rows.join("\n")
     end
@@ -18,8 +18,8 @@ module Primetimes
     private
 
     def row_string(row, table)
-      row.map! do |cell|
-        if cell_string[cell].nil?
+      row.map do |cell|
+        unless cell_string[cell]
           cell_string[cell] = cell.to_s.rjust(table.max_product_length)
         end
 
