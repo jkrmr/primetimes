@@ -8,11 +8,11 @@ module Primetimes
 
     def initialize(n:)
       @primes = n.primes
-      @max_product = 0
     end
 
+    # Compute the number of digits in the greatest product
     def max_product_length
-      max_product.to_s.length
+      (primes.last**2).to_s.length
     end
 
     def to_a
@@ -21,10 +21,6 @@ module Primetimes
 
     private
 
-    # Side Effect:
-    #   Set the maximum product encountered as a property (`max_product`) on the
-    #   object.
-    #
     def _table
       rows = _inner_table
 
@@ -35,10 +31,6 @@ module Primetimes
 
       # add header row of the list of primes
       rows.unshift(primes.unshift(nil))
-
-      self.max_product = rows.last.last
-
-      rows
     end
 
     # Map a list of primes to a list of lists, each list being a list of
