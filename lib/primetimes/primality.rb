@@ -9,8 +9,11 @@ module Primetimes
       end
 
       return false if self == 1
-      return true if self == 2
-      return false if even?
+      return true if self <= 3
+
+      if even? || (self % 3).zero?
+        return false
+      end
 
       sqrt = Math.sqrt(self)
       (3..sqrt).each do |i|
