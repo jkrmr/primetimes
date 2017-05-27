@@ -1,5 +1,8 @@
 * primetimes
 
+  #+ATTR_HTML: title="Circle CI status"
+  [[https://circleci.com/gh/jkrmr/primetimes/tree/master][https://circleci.com/gh/jkrmr/primetimes/tree/master.svg?style=svg]]
+
   A command-line program to print a "times table" of prime numbers.
 
 ** Usage
