@@ -21,8 +21,10 @@ module Primetimes
 
     private
 
+    # Build a table of products from the list of primes,
+    # Then add the list of primes as a header column and header row
     def _table
-      rows = _inner_table
+      rows = _inner_table(primes)
 
       # add header column of the list of primes
       primes.zip(rows).each do |prime, products|
@@ -44,9 +46,9 @@ module Primetimes
     #         [10, 15, 25, 35],
     #         [14, 21, 35, 49]]
     #
-    def _inner_table
-      primes.map do |prime_a|
-        primes.map { |prime_b| prime_a * prime_b }
+    def _inner_table(list)
+      list.map do |a|
+        list.map { |b| a * b }
       end
     end
   end
