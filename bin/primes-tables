@@ -19,6 +19,8 @@ if ARGV.empty?
   exit(1)
 end
 
-num_of_primes = ARGV.first.to_i
-table = PrimesTable.new(n: num_of_primes)
-PrimesTablePrinter.new.print(table)
+if $PROGRAM_NAME == __FILE__
+  num_of_primes = ARGV.first.to_i
+  table = PrimesTable.new(n: num_of_primes)
+  PrimesTablePrinter.new.print(table)
+end
