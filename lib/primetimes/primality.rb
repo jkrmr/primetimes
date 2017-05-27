@@ -1,8 +1,6 @@
 # coding: utf-8
 # frozen_string_literal: true
 
-require "primetimes/primes_list"
-
 module Primetimes
   module Primality
     # Predicate: Is the receiver prime?
@@ -29,7 +27,7 @@ module Primetimes
     end
 
     # Generate a list of n primes, where n = self
-    # Algorithm: "Load it from a damn file"
+    # Algorithm: Brute force
     # Complexity:
     #    Constant for n <= m, where m: the length of the file-sourced list
     #    For every incremental n > m: subquadratic (linear * sublinear)
@@ -38,12 +36,17 @@ module Primetimes
         raise ArgumentError, "length is defined for n > 0"
       end
 
-      list = PrimesList.list.first(self)
-      i = list.length
+      list = []
+      candidate = 2
+      length = list.length
 
-      until i == self
-        i += 1
-        list << i if i.prime?
+      until length == self
+        if candidate.prime?
+          list << candidate
+          length += 1
+        end
+
+        candidate += 1
       end
 
       list
