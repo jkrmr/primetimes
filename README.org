@@ -89,7 +89,7 @@
   benchmarks:
 
   #+BEGIN_SRC ruby
-  # lib/primetimes/primes_table.rb L52-L67 (daefe35d)
+  # lib/primetimes/primes_table.rb L52-L67 (f08b1449)
 
       def _inner_table
         primes.map do |prime_a|
@@ -108,7 +108,7 @@
           end
         end
   #+END_SRC
-  [[https://github.com/jkrmr/primetimes/blob/daefe35d/lib/primetimes/primes_table.rb#L52-L67][lib/primetimes/primes_table.rb#L52-L67 (daefe35d)]]
+  [[https://github.com/jkrmr/primetimes/blob/f08b1449/lib/primetimes/primes_table.rb#L52-L67][lib/primetimes/primes_table.rb#L52-L67 (f08b1449)]]
 
   Another experiment involved storing a list of primes as JSON and parsing it at
   runtime, in theory providing constant-time list generation for N up to the
