@@ -7,7 +7,6 @@ module Primetimes
     attr_accessor :max_product
 
     def initialize(n:)
-      @products = {}
       @primes = n.primes
       @max_product = 0
     end
@@ -25,17 +24,17 @@ module Primetimes
     def _table
       rows = _inner_table
 
-      # add left-header column of the list of primes
+      # add header column of the list of primes
       primes.zip(rows).each do |prime, products|
         products.unshift(prime)
       end
 
-      # add top-header row of the list of primes
+      # add header row of the list of primes
       rows.unshift(primes.unshift(nil))
     end
 
     # Map a list of primes to a list of lists, each list being a list of
-    # products of primes. Products are cached in the `products` hash table.
+    # products of primes.
     #
     # Side Effect:
     #   Set the maximum product encountered as a property (`max_product`) on the
@@ -52,17 +51,13 @@ module Primetimes
     def _inner_table
       primes.map do |prime_a|
         primes.map do |prime_b|
-          tuple = [prime_a, prime_b].sort
+          product = prime_a * prime_b
 
-          if products[tuple].nil?
-            products[tuple] = prime_a * prime_b
+          if product > max_product
+            self.max_product = product
           end
 
-          if products[tuple] > max_product
-            self.max_product = products[tuple]
-          end
-
-          products[tuple]
+          product
         end
       end
     end
