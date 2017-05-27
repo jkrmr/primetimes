@@ -1,6 +1,8 @@
 # coding: utf-8
 # frozen_string_literal: true
 
+require "primetimes/primes_list"
+
 module Primetimes
   module Primality
     def prime?
@@ -28,10 +30,10 @@ module Primetimes
         raise ArgumentError, "length is defined for n > 0"
       end
 
-      i = 0
-      list = []
+      list = PrimesList.list.first(self)
+      i = list.length
 
-      until list.length == self
+      until i == self
         i += 1
         list << i if i.prime?
       end
