@@ -29,13 +29,11 @@ module Primetimes
       end
 
       i = 0
-      memo = {}
       list = []
 
       until list.length == self
         i += 1
-        memo[i] = i.prime? if memo[i].nil?
-        list << i if memo[i]
+        list << i if i.prime?
       end
 
       list
