@@ -3,7 +3,7 @@
   #+ATTR_HTML: title="Circle CI status"
   [[https://circleci.com/gh/jkrmr/primetimes/tree/master][https://circleci.com/gh/jkrmr/primetimes/tree/master.svg?style=svg]]
 
-  A command-line program to print a "times table" of prime numbers.
+  A command-line program to print a multiplication table of prime numbers.
 
 ** Usage
   #+BEGIN_SRC shell
@@ -79,10 +79,38 @@
   #+END_SRC
   [[https://github.com/jkrmr/primetimes/blob/9b3dbcb0/lib/primetimes/primes_table_printer.rb#L23-L33][lib/primetimes/primes_table_printer.rb#L23-L33 (9b3dbcb0)]]
 
-  There are other operations that are parallelizable, but I saw similar results
-  with concurrency there as well--the cost of thread creation evidently
-  dominates in this case.
+  There are other parallelizable ~map~ operations in the script, but I saw
+  similarly disappointing results with concurrency there as well--the cost of
+  thread creation evidently dominates the cost of the work being done in each
+  map iteration.
 
-  Another experiment was with storing a list of primes as JSON and loading it,
-  in theory providing constant-time list generation for N up to the length of
-  the list. File I/O degraded performance significantly, though.
+  Likewise, somewhat more surprisingly, with caching. For example, caching the
+  "product of primes" calculation degraded rather than improved performance in
+  benchmarks:
+
+  #+BEGIN_SRC ruby
+  # lib/primetimes/primes_table.rb L52-L67 (daefe35d)
+
+      def _inner_table
+        primes.map do |prime_a|
+          primes.map do |prime_b|
+            tuple = [prime_a, prime_b].sort
+
+            if products[tuple].nil?
+              products[tuple] = prime_a * prime_b
+            end
+
+            if products[tuple] > max_product
+              self.max_product = products[tuple]
+            end
+
+            products[tuple]
+          end
+        end
+  #+END_SRC
+  [[https://github.com/jkrmr/primetimes/blob/daefe35d/lib/primetimes/primes_table.rb#L52-L67][lib/primetimes/primes_table.rb#L52-L67 (daefe35d)]]
+
+  Another experiment involved storing a list of primes as JSON and parsing it at
+  runtime, in theory providing constant-time list generation for N up to the
+  length of the list. Unsurprisingly, file I/O degraded actual performance
+  significantly, though.
