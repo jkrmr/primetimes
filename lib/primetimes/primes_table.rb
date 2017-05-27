@@ -42,6 +42,8 @@ module Primetimes
     # Side effect: Store the maximum product encountered as the max_product
     #              property
     #
+    # Complexity: Quadratic
+    #
     # Example:
     #   In: [2, 3, 5, 7]
     #

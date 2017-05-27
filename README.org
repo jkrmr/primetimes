@@ -28,11 +28,16 @@
   #+END_SRC
 
 ** Performance
-  The main operations are table construction, which consists of determining a
-  given number's primality, and building a list of n primes. The former is
-  implemented using optimized trial division (sub-linear asymptotic complexity),
-  the latter, after some experimentation with caching and concurrency (more on
-  that below), using brute force (linear time). Overall, sub-quadratic time.
+  From a theoretical perspective, the bulk of the work being done is table
+  construction. This consists of building a list of N primes (which in turn
+  involves determining primality for N * m integers), and computing an N * N
+  matrix of products from that list.
+
+  Primality-checking is implemented using optimized trial division (sub-linear
+  asymptotic complexity), list-building, after some experimentation with caching
+  and concurrency (more on that below), using brute force (linear time).
+
+  Matrix construction runs in quadratic time, so, overall, quadratic time.
 
   This doesn't scale, but on an older MacBook Pro gives decent results for N <
   1,000 and poor but tolerable performance for N < 10,000.
